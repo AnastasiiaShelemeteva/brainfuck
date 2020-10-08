@@ -1,84 +1,73 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-/* 	"os" */
-	//"io/ioutil"
-	//"bufio"
+	"os"
 	"strings"
-	
 )
-
-
-
-
-
-
 
 func main() {
 	prgPos := 0
 	mem := []int{0}
 	memPos := 0
 
-	inputVar := ("++++++++++[>+++++++++>++++++++++>+++>+++++++++++>+++++++>++++++++++++<<<<<<-]>---.>+++++.+++..---.--------.>>-.<++.>>++.>+.<<<<+++.+. ")
-	toArray := strings.Split(inputVar, "")	
+	inputVar := ("+++++++++++++++++++++++++++++++++.>,.")
+	toArray := strings.Split(inputVar, "")
 	for prgPos < len(toArray) {
 		if toArray[prgPos] == ">" {
-			memPos += 1
+			memPos++
 			if len(mem) <= memPos {
 				mem = append(mem, 0)
 			}
-			
+
 		} else if toArray[prgPos] == "<" {
-			memPos -= 1
-			
+			memPos--
+
 		} else if toArray[prgPos] == "+" {
-			mem[memPos] += 1
-			
+			mem[memPos]++
+
 		} else if toArray[prgPos] == "-" {
-			mem[memPos] -= 1
-			
+			mem[memPos]--
+
 		} else if toArray[prgPos] == "." {
-			fmt.Println("OUR ELEMENT IS ", string(mem[memPos]), "our memPos is", memPos, "symbol is ", toArray[prgPos])
+			fmt.Print(string(mem[memPos]))
+		} else if toArray[prgPos] == "," {
+			fmt.Print("\nNo you need to write one letter. If you write more, only the first will count. Please, put here your letter: ")
+			scanner := bufio.NewScanner(os.Stdin)
+			scanner.Scan()
+			input := scanner.Text()
+			byteInput := []byte(input)
+			mem[memPos] = int(byteInput[0])
 		} else if toArray[prgPos] == "[" {
-			
 			if mem[memPos] == 0 {
 				counterOpen := 0
-				prgPos += 1
-				
+				prgPos++
 				for prgPos < len(toArray) {
 					if toArray[prgPos] == "]" && counterOpen == 0 {
-						
 						break
-					} else if  toArray[prgPos] == "[" {
-						counterOpen += 1
-						
+					} else if toArray[prgPos] == "[" {
+						counterOpen++
 					} else if toArray[prgPos] == "]" {
-						
-						counterOpen -= 1
-					} 
-					prgPos += 1
-				} 
-				
-			} 
+						counterOpen--
+					}
+					prgPos++
+				}
+
+			}
 		} else if toArray[prgPos] == "]" {
-			
+
 			if mem[memPos] != 0 {
 				for toArray[prgPos] != "[" {
-					prgPos -= 1
-					
-			/* 	} else {
-					maybe here should be something or not
-				} */
+					prgPos--
+				}
 			}
-		} 		
-		
-	}
-	prgPos+=1
+
+		}
+		prgPos++
 
 	}
 
-	fmt.Println("Here is an array: ", mem)
-
+	fmt.Println("\nHere is an array: ", mem)
 
 }
